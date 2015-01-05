@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .graph .axis {
+            stroke-width: 1;
+        }
+
+        .graph .axis .tick line {
+            stroke: black;
+        }
+
+        .graph .axis .tick text {
+            fill: black;
+            font-size: 0.7em;
+        }
+
+        .graph .axis .domain {
+            fill: none;
+            stroke: black;
+        }
+
+        .graph .beacon {
+            fill: none;
+            stroke: black;
+            stroke-width: 1.5;
+        }
+
+        .legend rect {
+            fill:white;
+            stroke:black;
+            opacity:0.8;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="graph"></div>
+
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script>
+            
+            (function() {
+             d3.legend = function(g) {
+             g.each(function() {
+                    var g= d3.select(this),
+                    items = {},
+                    svg = d3.select(g.property("nearestViewportElement")),
+                    legendPadding = g.attr("data-style-padding") || 5,
+                    lb = g.selectAll(".legend-box").data([true]),
+                    li = g.selectAll(".legend-items").data([true])
+                    
+                    lb.enter().append("rect").classed("legend-box",true)
+                    li.enter().append("g").classed("legend-items",true)
+                    
+                    svg.selectAll("[data-legend]").each(function() {
+                                                        var self = d3.select(this)
+                                                        items[self.attr("data-legend")] = {
+                                                        pos : self.attr("data-legend-pos") || this.getBBox().y,
+                                                        color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke")
+                                                        }
+                                                        })
+                    
+                    items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
+                    
+                    
+                    li.selectAll("text")
+                    .data(items,function(d) { return d.key})
+                    .call(function(d) { d.enter().append("text")})
+                    .call(function(d) { d.exit().remove()})
+                    .attr("y",function(d,i) { return i+"em"})
+                    .attr("x","1em")
+                    .text(function(d) { ;return d.key})
+                    
+                    li.selectAll("circle")
+                    .data(items,function(d) { return d.key})
+                    .call(function(d) { d.enter().append("circle")})
+                    .call(function(d) { d.exit().remove()})
+                    .attr("cy",function(d,i) { return i-0.25+"em"})
+                    .attr("cx",0)
+                    .attr("r","0.4em")
+                    .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
+                    
+                    // Reposition and resize the box
+                    var lbbox = li[0][0].getBBox()  
+                    lb.attr("x",(lbbox.x-legendPadding))
+                    .attr("y",(lbbox.y-legendPadding))
+                    .attr("height",(lbbox.height+2*legendPadding))
+                    .attr("width",(lbbox.width+2*legendPadding))
+                    })
+             return g
+             }
+             })()
+        </script>
+        
+        <script>
+            var limit = 30,
+                interval = 750,
+                marginLeft = 50,
+                marginRight = 10,
+                marginTop = 10,
+                marginBottom = 20,
+                legendWidth = 110,
+                beaconNum = 0,
+                windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight,
+                yMax = 8;
+
+            var width = windowWidth - marginLeft - marginRight - legendWidth,
+                height = windowHeight - marginTop - marginBottom;
+
+            var x = d3.time.scale()
+                .domain([0, limit - 1])
+                .range([marginLeft, marginLeft + width]);
+
+            var y = d3.scale.linear()
+                .domain([-2, yMax])
+                .range([marginTop + height, marginTop]);
+
+            var line = d3.svg.line()
+                .interpolate('linear')
+                // .interpolate('basis')
+                .x(function(d, i) {
+                    return x(i);
+                })
+                .y(function(d) {
+                    return y(d);
+                });
+
+            var svg = d3.select('.graph').append('svg')
+                .attr('class', 'chart')
+                .attr('width', windowWidth)
+                .attr('height', windowHeight);
+
+            var xaxis = svg.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', 'translate(0, ' + (marginTop + y(0) - y(yMax)) + ')')
+                .call(x.axis = d3.svg.axis().scale(x).ticks(0).orient('bottom'));
+
+            var yaxis = svg.append('g')
+                .attr('class', 'y axis')
+                .attr('transform', 'translate(' + marginLeft + ', 0)')
+                .call(y.axis = d3.svg.axis().scale(y).orient('left'));
+
+            var paths = svg.append('g');
+
+            var beacons = {};
+
+            var colorPalette = d3.scale.category20();
+
+            var legend = svg.append("g")
+                                .attr("class","legend")
+                                .attr("transform","translate(" + (50 + width + marginLeft) + ", " + (marginTop+ 20) + ")")
+                                .style("font-size","12px");
+
+            function tick(feeds) {
+                // add distance info provided by feeds
+                feeds.forEach(function(feed) {
+                    //beacon id
+                    var bid = feed['bid'];
+
+                    if ( beacons[bid] != undefined ) {
+                        // if the beacon has provided distance before,
+                        // push new distance
+                        beacons[bid].data.push(feed['distance']);
+                        beacons[bid].data.shift();
+                    } else {
+                        // if the beacon has not provided distance before,
+                        // create a beacon element and set its color, data, and path
+                        beacons[bid] = {
+                            color: colorPalette(beaconNum),
+                            data: d3.range(limit-2).map(function() {
+                                return -2;
+                            })
+                        };
+
+                        beacons[bid].data.push(feed['distance']);
+                        beacons[bid].path = paths.append('path')
+                                            .data([beacons[bid].data])
+                                            .attr('class', name + ' beacon')
+                                            .attr('data-legend', feed['name'])
+                                            .style('stroke', beacons[bid].color);
+
+                        beaconNum ++;
+                    }
+                });
+
+                // for beacons not receiving new distance, push -2
+                var newbids = feeds.map(function(feed) {
+                    return feed.bid;
+                });
+
+                for (bid in beacons) {
+                    if ( newbids.indexOf(bid) == -1 ) {
+                        beacons[bid].data.push(-2);
+                        beacons[bid].data.shift();
+                    };
+
+                    // show all beacons as lines
+                    beacons[bid].path.attr('d', line);
+                } 
+
+                //update legend
+                legend.call(d3.legend);
+            }
+        </script>
+    </body>
+</html>
