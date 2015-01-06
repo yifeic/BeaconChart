@@ -21,6 +21,9 @@
 @property (nonatomic, strong) CYFBeaconManager *manager;
 @property (nonatomic, strong) CYFBeaconDistanceSmoother *beaconJudger;
 
+@property (nonatomic) NSInteger color;
+@property (nonatomic, strong) NSMutableDictionary *keyToColor;
+
 @end
 
 @implementation ChartViewController
@@ -28,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.keyToColor= [NSMutableDictionary dictionary];
     
     
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"html"];
@@ -52,7 +55,7 @@
     br2.notifyOnExit = YES;
     
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    self.manager = [[CYFBeaconManager alloc] initWithRegions:@[br, br2] locationManager:locationManager];
+    self.manager = [[CYFBeaconManager alloc] initWithRegions:@[br, br1] locationManager:locationManager];
     
     
     [self.manager.rangedBeaconsSignal subscribeNext:^(NSArray *beacons) {
@@ -102,19 +105,24 @@
 }
 
 
-- (void)addBeacons:(NSArray *)beacons toWebView:(UIWebView *)webView{
+- (void)addBeacons:(NSArray *)beacons toWebView:(UIWebView *)webView {
 
     
     NSArray *arg =
     [[beacons.rac_sequence map:^id(CYFBeacon *beacon) {
         
-        NSInteger number = [beacon.minor integerValue] % 9;
-        ;
+        NSString *key = [NSString stringWithFormat:@"%@:%@:%@", beacon.proximityUUID.UUIDString, beacon.major, beacon.minor];
         
-        NSString *key = [NSString stringWithFormat:@"%ld", number];
+        NSNumber *color = self.keyToColor[key];
+        if (color == nil) {
+            color = @(self.color % 20);
+            self.color++;
+            self.keyToColor[key] = color;
+        }
+        
         NSString *name = [NSString stringWithFormat:@"%@:%@", beacon.major, beacon.minor];
         
-        return @{@"bid": key, @"name": name, @"distance": @([[NSString stringWithFormat:@"%.2f", beacon.accuracy] floatValue])};
+        return @{@"bid": key, @"color": color, @"name": name, @"distance": @([[NSString stringWithFormat:@"%.2f", beacon.accuracy] floatValue])};
         
     }] array];
     
