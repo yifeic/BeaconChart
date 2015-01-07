@@ -15,9 +15,6 @@
 		30A473F21A5A14B000631D18 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30A473F01A5A14B000631D18 /* LaunchScreen.xib */; };
 		30A473FE1A5A14B000631D18 /* BeaconChartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A473FD1A5A14B000631D18 /* BeaconChartTests.m */; };
 		30A474121A5A14DA00631D18 /* ChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A474081A5A14DA00631D18 /* ChartViewController.m */; };
-		30A474131A5A14DA00631D18 /* CYFBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A4740A1A5A14DA00631D18 /* CYFBeacon.m */; };
-		30A474141A5A14DA00631D18 /* CYFBeaconDistanceSmoother.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A4740C1A5A14DA00631D18 /* CYFBeaconDistanceSmoother.m */; };
-		30A474151A5A14DA00631D18 /* CYFBeaconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A4740E1A5A14DA00631D18 /* CYFBeaconManager.m */; };
 		30A474171A5A14DA00631D18 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = 30A474111A5A14DA00631D18 /* test.html */; };
 		5DE6BB1EAE0DB45B7CCD051A /* libPods-BeaconChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D5CDB1A502C90AFDD0563CF /* libPods-BeaconChart.a */; };
 /* End PBXBuildFile section */
@@ -49,12 +46,6 @@
 		30A473FD1A5A14B000631D18 /* BeaconChartTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeaconChartTests.m; sourceTree = "<group>"; };
 		30A474071A5A14DA00631D18 /* ChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChartViewController.h; sourceTree = "<group>"; };
 		30A474081A5A14DA00631D18 /* ChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChartViewController.m; sourceTree = "<group>"; };
-		30A474091A5A14DA00631D18 /* CYFBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYFBeacon.h; sourceTree = "<group>"; };
-		30A4740A1A5A14DA00631D18 /* CYFBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYFBeacon.m; sourceTree = "<group>"; };
-		30A4740B1A5A14DA00631D18 /* CYFBeaconDistanceSmoother.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYFBeaconDistanceSmoother.h; sourceTree = "<group>"; };
-		30A4740C1A5A14DA00631D18 /* CYFBeaconDistanceSmoother.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYFBeaconDistanceSmoother.m; sourceTree = "<group>"; };
-		30A4740D1A5A14DA00631D18 /* CYFBeaconManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYFBeaconManager.h; sourceTree = "<group>"; };
-		30A4740E1A5A14DA00631D18 /* CYFBeaconManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYFBeaconManager.m; sourceTree = "<group>"; };
 		30A474111A5A14DA00631D18 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
 		4D38585857CFDE31D82C05F3 /* Pods-BeaconChart.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeaconChart.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeaconChart/Pods-BeaconChart.release.xcconfig"; sourceTree = "<group>"; };
 		F67C425886D560149C3054C5 /* Pods-BeaconChart.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeaconChart.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeaconChart/Pods-BeaconChart.debug.xcconfig"; sourceTree = "<group>"; };
@@ -118,12 +109,6 @@
 				30A473EB1A5A14B000631D18 /* Main.storyboard */,
 				30A474071A5A14DA00631D18 /* ChartViewController.h */,
 				30A474081A5A14DA00631D18 /* ChartViewController.m */,
-				30A474091A5A14DA00631D18 /* CYFBeacon.h */,
-				30A4740A1A5A14DA00631D18 /* CYFBeacon.m */,
-				30A4740B1A5A14DA00631D18 /* CYFBeaconDistanceSmoother.h */,
-				30A4740C1A5A14DA00631D18 /* CYFBeaconDistanceSmoother.m */,
-				30A4740D1A5A14DA00631D18 /* CYFBeaconManager.h */,
-				30A4740E1A5A14DA00631D18 /* CYFBeaconManager.m */,
 				30A474111A5A14DA00631D18 /* test.html */,
 				30A473EE1A5A14B000631D18 /* Images.xcassets */,
 				30A473F01A5A14B000631D18 /* LaunchScreen.xib */,
@@ -302,12 +287,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30A474151A5A14DA00631D18 /* CYFBeaconManager.m in Sources */,
-				30A474141A5A14DA00631D18 /* CYFBeaconDistanceSmoother.m in Sources */,
 				30A473EA1A5A14B000631D18 /* ViewController.m in Sources */,
 				30A474121A5A14DA00631D18 /* ChartViewController.m in Sources */,
 				30A473E71A5A14B000631D18 /* AppDelegate.m in Sources */,
-				30A474131A5A14DA00631D18 /* CYFBeacon.m in Sources */,
 				30A473E41A5A14B000631D18 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

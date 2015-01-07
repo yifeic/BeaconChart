@@ -1,4 +1,6 @@
 PODS:
+  - CYFBeacon (0.1.0):
+    - ReactiveCocoa (~> 2.3)
   - ReactiveCocoa (2.3.1):
     - ReactiveCocoa/UI (= 2.3.1)
   - ReactiveCocoa/Core (2.3.1):
@@ -8,9 +10,20 @@ PODS:
     - ReactiveCocoa/Core
 
 DEPENDENCIES:
+  - CYFBeacon (from `https://github.com/yifeic/CYFBeacon.git`)
   - ReactiveCocoa (~> 2.3.1)
 
+EXTERNAL SOURCES:
+  CYFBeacon:
+    :git: https://github.com/yifeic/CYFBeacon.git
+
+CHECKOUT OPTIONS:
+  CYFBeacon:
+    :commit: 67238ea61d43de624d2dd7cd40cafc1975ac276e
+    :git: https://github.com/yifeic/CYFBeacon.git
+
 SPEC CHECKSUMS:
+  CYFBeacon: b17d97bb42589ca84e93e42220ffc16f0aea2808
   ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
 
 COCOAPODS: 0.35.0
