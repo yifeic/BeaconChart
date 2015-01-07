@@ -23,6 +23,7 @@
 
 @property (nonatomic) NSInteger color;
 @property (nonatomic, strong) NSMutableDictionary *keyToColor;
+@property (nonatomic, strong) NSDictionary *map;
 
 @end
 
@@ -72,6 +73,15 @@
     [[RACObserve(self, beaconJudger.smoothedBeacons) ignore:nil] subscribeNext:^(NSArray *sortedBeacons) {
         [self addBeacons:sortedBeacons toWebView:self.webView];
     }];
+    
+    self.map = @{
+                 
+                 @"44F77920-EBF9-11E3-AC10-0800200C9A66:9:83": @"WORK AREA",
+                 @"44F77920-EBF9-11E3-AC10-0800200C9A66:5:82": @"KITCHEN",
+                 @"44F77920-EBF9-11E3-AC10-0800200C9A66:5:80": @"HAL's Nook",
+                 @"44F77920-EBF9-11E3-AC10-0800200C9A66:10:50": @"Whiskey Room",
+                 @"44F77920-EBF9-11E3-AC10-0800200C9A66:5:78": @"Conference Room"
+                 };
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -119,8 +129,8 @@
             self.color++;
             self.keyToColor[key] = color;
         }
-        
-        NSString *name = [NSString stringWithFormat:@"%@:%@", beacon.major, beacon.minor];
+        NSString *name = self.map[key] ?: [NSString stringWithFormat:@"%@:%@", beacon.major, beacon.minor];
+
         
         return @{@"bid": key, @"color": color, @"name": name, @"distance": @([[NSString stringWithFormat:@"%.2f", beacon.accuracy] floatValue])};
         
