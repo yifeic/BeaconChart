@@ -19,7 +19,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   CYFBeacon:
-    :commit: 67238ea61d43de624d2dd7cd40cafc1975ac276e
+    :commit: e5f8476c1ef548b08f63e97975f7d82daf48968f
     :git: https://github.com/yifeic/CYFBeacon.git
 
 SPEC CHECKSUMS:
